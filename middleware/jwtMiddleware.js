@@ -9,7 +9,8 @@ const token = req.headers['authorization'].split(" ")[1]
 if (token) {
     try {
         const jwtResponse = jwt.verify(token,process.env.JWTSECRET) 
-        console.log(jwtResponse);
+        console.log(jwtResponse); 
+        // in this response we will the token owners email id and role ,whatever we added in the payload when we sign(created) the token will get here.
         req.payload = jwtResponse.userMail
         next()  
     }catch(error) {

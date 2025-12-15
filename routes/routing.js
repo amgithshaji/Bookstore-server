@@ -5,6 +5,8 @@ const express = require('express')
 const userController = require('../controller/userController')
 const jwtMiddleware = require('../middleware/jwtMiddleware')
 const { addBookController } = require('../controller/bookController')
+const multerMiddleware = require('../middleware/multerMiddleware')
+
 
 // create router object
 const router = new express.Router()
@@ -18,7 +20,7 @@ router.post('/login',userController.logincontroller)
 router.post('/google/sign-in',userController.googleLoginController)
 
 // ---------------authorised user-----------------
-// add book
-router.post('/user/book/add',jwtMiddleware,addBookController,addBookController)
+// add book - request body content is formdata
+router.post('/user/book/add',jwtMiddleware,multerMiddleware.array('uploadImages',3),addBookController,addBookController)
 
 module.exports = router

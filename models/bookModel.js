@@ -53,7 +53,7 @@ const bookSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-        Stutus:{
+        Status:{
         type:String,
         default:'pending'
     },
