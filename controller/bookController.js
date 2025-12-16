@@ -29,3 +29,73 @@ try {
 }
 }
 
+// get home books
+exports.getHomePageBooksController = async (req,res)=>{
+console.log("inside getHomePageBookController");
+  try {
+    //get newly added 4 books from db
+    const homeBooks = await books.find().sort({_id:-1}).limit(4)
+    res.status(200).json(homeBooks) 
+  } catch(error){
+    console.log(error);
+    res.status(500).json(error)  
+  }
+
+}
+
+
+
+// get all books - user
+exports.getuserAllBooksController = async (req,res)=>{
+console.log("inside getuserAllBooksController");
+// get login user mail from token
+const loginUsermail = req.payload
+  try {
+    //get newly added 4 books from db
+    const allBooks = await books.find({sellerMail:{$ne:loginUsermail}})
+    res.status(200).json(allBooks) 
+  } catch(error){
+    console.log(error);
+    res.status(500).json(error)  
+  }
+
+}
+
+
+
+
+// get all user uploaded books
+
+exports.getuserUploadprofilePageBooksController = async (req,res)=>{
+console.log("getuserUploadprofilePageBooksController");
+// get login user mail from token
+const loginUsermail = req.payload
+  try {
+    //get newly added 4 books from db
+    const allUserBooks = await books.find({sellerMail:loginUsermail})
+    res.status(200).json(allUserBooks) 
+  } catch(error){
+    console.log(error);
+    res.status(500).json(error)  
+  }
+
+}
+
+
+
+// get all user brought books
+
+exports.getuserBroughtBookProfilePageController = async (req,res)=>{
+console.log("getuserBroughtBookProfilePageController");
+// get login user mail from token
+const loginUsermail = req.payload
+  try {
+    //get all books from db expect loggeidn user
+    const allUserPurchaseBooks = await books.find({buyerMail:loginUsermail})
+    res.status(200).json(allUserPurchaseBooks) 
+  } catch(error){
+    console.log(error);
+    res.status(500).json(error)  
+  }
+
+}
