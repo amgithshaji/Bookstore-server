@@ -29,7 +29,7 @@ try {
 }
 }
 
-// get home books
+// get home books- guest user
 exports.getHomePageBooksController = async (req,res)=>{
 console.log("inside getHomePageBookController");
   try {
@@ -51,7 +51,7 @@ console.log("inside getuserAllBooksController");
 // get login user mail from token
 const loginUsermail = req.payload
   try {
-    //get newly added 4 books from db
+    //get all books from db expect logginded user uploaded books,bcoz logginded user doesn't need to see his books in all books 
     const allBooks = await books.find({sellerMail:{$ne:loginUsermail}})
     res.status(200).json(allBooks) 
   } catch(error){
@@ -71,7 +71,7 @@ console.log("getuserUploadprofilePageBooksController");
 // get login user mail from token
 const loginUsermail = req.payload
   try {
-    //get newly added 4 books from db
+    //get books from db that is uploaded just by this loginded user
     const allUserBooks = await books.find({sellerMail:loginUsermail})
     res.status(200).json(allUserBooks) 
   } catch(error){
@@ -90,7 +90,7 @@ console.log("getuserBroughtBookProfilePageController");
 // get login user mail from token
 const loginUsermail = req.payload
   try {
-    //get all books from db expect loggeidn user
+    //get all books....
     const allUserPurchaseBooks = await books.find({buyerMail:loginUsermail})
     res.status(200).json(allUserPurchaseBooks) 
   } catch(error){

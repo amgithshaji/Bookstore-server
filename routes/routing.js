@@ -4,9 +4,8 @@ const express = require('express')
 // imported api logic from controller
 const userController = require('../controller/userController')
 const jwtMiddleware = require('../middleware/jwtMiddleware')
-const { addBookController } = require('../controller/bookController')
 const multerMiddleware = require('../middleware/multerMiddleware')
-
+const bookController = require('../controller/bookController')
 
 // create router object
 const router = new express.Router()
@@ -19,8 +18,20 @@ router.post('/login',userController.logincontroller)
 // googlelogin
 router.post('/google/sign-in',userController.googleLoginController)
 
+// get home books
+router.get('/books/home',bookController.getHomePageBooksController)
+
+
 // ---------------authorised user-----------------
 // add book - request body content is formdata
-router.post('/user/book/add',jwtMiddleware,multerMiddleware.array('uploadImages',3),addBookController,addBookController)
+router.post('/user/book/add',jwtMiddleware,multerMiddleware.array('uploadImages',3),bookController.addBookController)
+
+// get all books page
+router.get('/books/all',jwtMiddleware,bookController.getuserAllBooksController)
+
+// get all user upload pics
+
+router.get('/user-books/all',jwtMiddleware,bookController.getuserUploadprofilePageBooksController)
+
 
 module.exports = router
