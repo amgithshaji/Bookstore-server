@@ -48,11 +48,15 @@ console.log("inside getHomePageBookController");
 // get all books - user
 exports.getuserAllBooksController = async (req,res)=>{
 console.log("inside getuserAllBooksController");
+// get qury from req
+const searchKey = req.query.search
+console.log(searchKey);
+
 // get login user mail from token
 const loginUsermail = req.payload
   try {
     //get all books from db expect logginded user uploaded books,bcoz logginded user doesn't need to see his books in all books 
-    const allBooks = await books.find({sellerMail:{$ne:loginUsermail}})
+    const allBooks = await books.find({sellerMail:{$ne:loginUsermail},title:{$regex:searchKey,$options:'i'}})
     res.status(200).json(allBooks) 
   } catch(error){
     console.log(error);

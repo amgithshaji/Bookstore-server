@@ -33,5 +33,11 @@ router.get('/books/all',jwtMiddleware,bookController.getuserAllBooksController)
 
 router.get('/user-books/all',jwtMiddleware,bookController.getuserUploadprofilePageBooksController)
 
+// get all purchase book
+
+router.get('/user-purchase/book',jwtMiddleware,bookController.getuserBroughtBookProfilePageController)
+
+
+
 
 module.exports = router
