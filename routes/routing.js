@@ -6,6 +6,8 @@ const userController = require('../controller/userController')
 const jwtMiddleware = require('../middleware/jwtMiddleware')
 const multerMiddleware = require('../middleware/multerMiddleware')
 const bookController = require('../controller/bookController')
+const adminMiddleware = require('../middleware/adminMiddleWare')
+
 
 // create router object
 const router = new express.Router()
@@ -41,5 +43,9 @@ router.get('/user-purchase/book',jwtMiddleware,bookController.getuserBroughtBook
 router.get('/books/:id/view',jwtMiddleware,bookController.viewBookController)
 // user edit- request body content is formdata
 router.put('/user/:id/edit',jwtMiddleware,multerMiddleware.single('picture'),userController.updateUserProfileController)
+
+// ---------------------------athorised admin----------------------------
+router.get('/admin-books/all',adminMiddleware,bookController.getAllBooksController)
+
 
 module.exports = router

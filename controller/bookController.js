@@ -122,3 +122,20 @@ exports.viewBookController = async (req,res)=>{
   }
   
 }
+
+// get all books - admin: login user
+
+
+exports.getAllBooksController = async (req,res)=>{
+  console.log("inside getuserAllBooksController");
+  try {
+    // get all books from db
+    const allBooks = await books.find()
+    res.status(200).json(allBooks)
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+    
+  }
+}
