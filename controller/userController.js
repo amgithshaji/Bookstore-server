@@ -87,7 +87,7 @@ exports.registerController = async (req,res)=>{
     
  }
 // usereditprofile
-exports.updateUserProfileController = async (req,res)=>{
+  exports.updateUserProfileController = async (req,res)=>{
 console.log("inside updateUserProfileController");
 // get id from req url
 const {id} = req.params
@@ -109,4 +109,18 @@ try {
     
 }
 }
-// admineditprofile
+// get all users only  : admin login user
+exports.getAllUsersController = async (req, res) => {
+  console.log("inside getAllUsersController");
+  try {
+    // get all users with role = 'user'
+    const allUsers = await users.find({ role: "user" });
+
+    res.status(200).json(allUsers);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+// admin editprofile

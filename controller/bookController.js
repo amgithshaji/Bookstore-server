@@ -139,3 +139,44 @@ exports.getAllBooksController = async (req,res)=>{
     
   }
 }
+
+// update book status  - admin: login user
+
+
+exports.updateBookStatusBooksController = async (req,res)=>{
+  console.log("inside updateBookStatusBooksController");
+  // get _id of the book
+  const{id} = req.params
+  try {
+    // get  books details from db
+    const bookDetails = await books.findById({_id:id})
+    bookDetails.Status = "approved"
+    // save changes to mongodb
+    await bookDetails.save()
+    res.status(200).json(bookDetails)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+    
+  }
+}
+
+// delete user book 
+
+
+exports.deleteBooksController = async (req,res)=>{
+  console.log("inside deleteBooksController");
+  // get _id of the book
+  const{id} = req.params
+  try {
+    // get  books details from db
+    const bookDetails = await books.findByIdAndDelete({_id:id})
+  
+    res.status(200).json(bookDetails)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+    
+  }
+}
+
