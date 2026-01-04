@@ -49,7 +49,7 @@ console.log("inside getHomePageBookController");
 // get all books - user
 exports.getuserAllBooksController = async (req,res)=>{
 console.log("inside getuserAllBooksController");
-// get qury from req
+// get query from req
 const searchKey = req.query.search
 console.log(searchKey);
 
@@ -184,13 +184,43 @@ exports.deleteBooksController = async (req,res)=>{
 // payment 
 exports.bookPaymentController= async (req,res)=>{
   console.log("inside bookPaymentController");
-const {title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,_id,uploadImages,sellerMail} = req.body
+// const {title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,_id,uploadImages,sellerMail} = req.body
 const email = req.payload
+const {id} = req.params
 try {
-  const updateBookDetails = await books.findByIdAndUpdate({_id},{
-    title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,uploadImages,sellerMail,Status:"sold",buyerMail:email
-},{new:true})
-  
+const bookDetails = await books.findById({_id:id})
+bookDetails.Status = "sold"
+bookDetails.buyerMail = email
+await bookDetails.save()
+const {title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,_id,uploadImages,sellerMail} = bookDetails
+// checkout secssion
+  const line_items = [{
+    price_data:{
+      currency:'usd',
+      product_data:{
+        name: title,
+        description:`${author} | ${publisher} `,
+        images:[imageURL],
+        metadata:{
+          title,author,pages,price,discountPrice,imageURL
+        }
+      },
+      unit_amount:Math.round(discountPrice*100)
+
+    },
+    quantity:1
+  }]
+  const session = await stripe.checkout.sessions.create({
+  line_items,
+  mode: 'payment',
+  success_url: 'http://localhost:5173/user/payment-success',
+  cancel_url:'http://localhost:5173/user/payment-error',
+  payment_method_types:["card"]
+});
+console.log(session);
+res.status(200).json({checkoutURL:session.url})
+
+
 } catch(error){
   console.log(error);
   res.status(500).json(error)

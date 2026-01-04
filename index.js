@@ -1,5 +1,6 @@
 // import express,cors,dotenv
 // loads env file contents into process.env by default
+const path = require('path');
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
